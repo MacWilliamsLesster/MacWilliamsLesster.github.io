@@ -1,60 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cafeteria Management</title>
+    <title>Fitness App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        .menu {
+        #header {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .menu a {
-            text-decoration: none;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-        }
-        .menu a:hover {
-            background-color: #0056b3;
-        }
-        .content {
-            border: 1px solid #ddd;
+            justify-content: space-between;
             padding: 20px;
-            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
         }
-        .placeholder {
-            color: #777;
-            font-style: italic;
+        #main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .back-button {
+            background-color: #FF5722;
+            color: white;
+        }
+        .save-button {
+            background-color: #4CAF50;
+            color: white;
         }
     </style>
 </head>
 <body>
 
-    <h1>Cafeteria Management</h1>
+<div id="header">
+    <button onclick="closeApp()">Cerrar App</button>
+    <button onclick="showUserInfo()">Ver Info</button>
+</div>
 
-    <div class="menu">
-        <a href="#productos" onclick="showPlaceholder('Productos')">Productos</a>
-        <a href="#promos" onclick="showPlaceholder('Promociones')">Promociones</a>
-        <a href="#precios" onclick="showPlaceholder('Precios')">Precios</a>
-        <a href="#lugares" onclick="showPlaceholder('Lugares')">Lugares</a>
-    </div>
+<div id="main">
+    <!-- Aquí se mostrarán las diferentes vistas -->
+</div>
 
-    <div id="content" class="content">
-        <p class="placeholder">Selecciona una opción del menú para ver el contenido.</p>
-    </div>
+<script>
+    let userInfo = {
+        nombre: "",
+        peso: "",
+        altura: ""
+    };
 
-    <script>
-        function showPlaceholder(section) {
-            document.getElementById('content').innerHTML = `<p class="placeholder">Aquí se mostrará la página de ${section}.</p>`;
-        }
-    </script>
+    function closeApp() {
+        alert('App cerrada');
+    }
+
+    function showUserInfo() {
+        alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
+    }
+
+    function showLoginScreen() {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Inicio de Sesión</h2>
+            <label>Nombre de Usuario:</label>
+            <input type="text" id="username"><br><br>
+            <label>Peso:</label>
+            <input type="text" id="weight"><br><br>
+            <label>Altura:</label>
+            <input type="text" id="height"><br><br>
+            <button class="save-button" onclick="login()">Iniciar Sesión</button>
+        `;
+    }
+
+    function login() {
+        userInfo.nombre = document.getElementById('username').value;
+        userInfo.peso = document.getElementById('weight').value;
+        userInfo.altura = document.getElementById('height').value;
+        showMainScreen();
+    }
+
+    function showMainScreen() {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Bienvenido, ${userInfo.nombre}</h2>
+            <button onclick="manageRoutines()">Rutinas</button><br>
+            <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
+            <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
+            <button onclick="viewProgress()">Ver Progreso</button><br>
+            <button class="back-button" onclick="closeApp()">Salir</button>
+        `;
+    }
+
+    function manageRoutines() {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Rutinas</h2>
+            <button onclick="registerRoutines()">Registrar Rutinas</button><br>
+            <button onclick="viewRoutines()">Ver Rutinas</button><br>
+            <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
+            <button class="back-button" onclick="showMainScreen()">Atrás</button>
+        `;
+    }
+
+    function registerRoutines() {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Registrar Rutinas</h2>
+            <label>Ejercicio:</label>
+            <input type="text" id="exercise"><br><br>
+            <label>Repeticiones:</label>
+            <input type="text" id="reps"><br><br>
+            <label>Series:</label>
+            <input type="text" id="sets"><br><br>
+            <label>Descripción:</label>
+            <input type="text" id="description"><br><br>
+            <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
+            <button class="back-button" onclick="manageRoutines()">Atrás</button>
+        `;
+    }
+
+    function saveRoutine() {
+        alert('Rutina guardada con éxito!');
+        manageRoutines();
+    }
+
+    function viewRoutines() {
+        alert('Funcionalidad no implementada en la versión web.');
+        manageRoutines();
+    }
+
+    function deleteRoutines() {
+        alert('Funcionalidad no implementada en la versión web.');
+        manageRoutines();
+    }
+
+    function editUserInfo() {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Editar Información del Usuario</h2>
+            <label>Nombre de Usuario:</label>
+            <input type="text" id="username" value="${userInfo.nombre}"><br><br>
+            <label>Peso:</label>
+            <input type="text" id="weight" value="${userInfo.peso}"><br><br>
+            <label>Altura:</label>
+            <input type="text" id="height" value="${userInfo.altura}"><br><br>
+            <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+            <button class="back-button" onclick="showMainScreen()">Atrás</button>
+        `;
+    }
+
+    function saveUserInfo() {
+        userInfo.nombre = document.getElementById('username').value;
+        userInfo.peso = document.getElementById('weight').value;
+        userInfo.altura = document.getElementById('height').value;
+        alert('Información actualizada con éxito!');
+        showMainScreen();
+    }
+
+    function registerExercise() {
+        alert('Funcionalidad no implementada en la versión web.');
+        showMainScreen();
+    }
+
+    function viewProgress() {
+        alert('Funcionalidad no implementada en la versión web.');
+        showMainScreen();
+    }
+
+    // Iniciar mostrando la pantalla de inicio de sesión
+    showLoginScreen();
+</script>
 
 </body>
 </html>
