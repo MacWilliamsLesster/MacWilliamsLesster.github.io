@@ -39,6 +39,10 @@
             background-color: #4CAF50;
             color: white;
         }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -134,13 +138,32 @@
     }
 
     function viewRoutines() {
-        alert('Funcionalidad no implementada en la versión web.');
-        manageRoutines();
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Ver Rutinas</h2>
+            <ul>
+                <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
+                <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
+            </ul>
+            <button class="back-button" onclick="manageRoutines()">Atrás</button>
+        `;
     }
 
     function deleteRoutines() {
-        alert('Funcionalidad no implementada en la versión web.');
-        manageRoutines();
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Eliminar Rutinas</h2>
+            <ul>
+                <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
+                <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
+            </ul>
+            <button class="back-button" onclick="manageRoutines()">Atrás</button>
+        `;
+    }
+
+    function deleteRoutine(routine) {
+        alert(`Rutina ${routine} eliminada.`);
+        deleteRoutines(); // Actualizar la vista de eliminación de rutinas
     }
 
     function editUserInfo() {
@@ -172,13 +195,79 @@
     }
 
     function viewProgress() {
-        alert('Funcionalidad no implementada en la versión web.');
-        showMainScreen();
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <h2>Ver Progreso</h2>
+            <canvas id="weightChart"></canvas><br>
+            <canvas id="heightChart"></canvas><br>
+            <button class="back-button" onclick="showMainScreen()">Atrás</button>
+        `;
+
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                datasets: [{
+                    label: 'Peso (kg)',
+                    data: [70, 71, 70.5, 72, 71],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' kg';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const heightCtx = document.getElementById('heightChart').getContext('2d');
+        new Chart(heightCtx, {
+            type: 'line',
+            data: {
+                labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                datasets: [{
+                    label: 'Altura (cm)',
+                    data: [175, 175.2, 175.1, 175.3, 175.2],
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' cm';
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    // Iniciar mostrando la pantalla de inicio de sesión
-    showLoginScreen();
+    // Inicializar la vista de inicio de sesión al cargar la página
+    window.onload = showLoginScreen;
 </script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
