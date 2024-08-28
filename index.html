@@ -54,7 +54,7 @@
 </head>
 <body>
     <div id="header">
-        <button onclick="closeApp()">Cerrar App</button>
+        <button onclick="goToStartScreen()">Inicio</button>
         <button onclick="showUserInfo()">Ver Info</button>
     </div>
 
@@ -70,8 +70,8 @@
             altura: ""
         };
 
-        function closeApp() {
-            alert('App cerrada');
+        function goToStartScreen() {
+            showLoginScreen();
         }
 
         function showUserInfo() {
@@ -107,7 +107,7 @@
                 <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
-                <button class="back-button" onclick="closeApp()">Salir</button>
+                <button class="back-button" onclick="goToStartScreen()">Inicio</button>
             `;
         }
 
