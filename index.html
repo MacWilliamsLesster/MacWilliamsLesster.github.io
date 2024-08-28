@@ -200,9 +200,9 @@
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Ver Progreso</h2>
+                <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
                 <canvas id="weightChart"></canvas><br>
                 <canvas id="heightChart"></canvas><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
             `;
 
             const weightCtx = document.getElementById('weightChart').getContext('2d');
