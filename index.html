@@ -45,6 +45,11 @@
             max-width: 100%;
             height: auto;
         }
+        input[type="text"] {
+            width: 200px;
+            padding: 8px;
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
@@ -79,10 +84,10 @@
                 <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
-                <label>Peso:</label>
-                <input type="text" id="weight"><br><br>
-                <label>Altura:</label>
-                <input type="text" id="height"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="weight" placeholder="Peso en kg"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="height" placeholder="Altura en cm"><br><br>
                 <button class="save-button" onclick="login()">Iniciar Sesión</button>
             `;
         }
@@ -174,10 +179,10 @@
                 <h2>Editar Información del Usuario</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username" value="${userInfo.nombre}"><br><br>
-                <label>Peso:</label>
-                <input type="text" id="weight" value="${userInfo.peso}"><br><br>
-                <label>Altura:</label>
-                <input type="text" id="height" value="${userInfo.altura}"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="weight" value="${userInfo.peso}" placeholder="Peso en kg"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
                 <button class="back-button" onclick="showMainScreen()">Atrás</button>
             `;
