@@ -14,13 +14,10 @@
         }
         #header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             padding: 20px;
             background: linear-gradient(135deg, #333333, #555555);
             color: white;
-        }
-        #header button {
-            width: 120px; /* Ancho fijo para todos los botones */
         }
         #main {
             display: flex;
@@ -31,8 +28,7 @@
             max-height: 90vh;
         }
         button {
-            width: 150px; /* Ancho fijo para todos los botones en el cuerpo principal */
-            padding: 10px;
+            padding: 10px 50px; /* Botones más anchos */
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
@@ -40,36 +36,34 @@
             color: #333333;
             border: none;
             border-radius: 5px;
-            text-align: center;
-        }
-        .back-button {
-            background-color: #b0b0b0;
-            color: #333333;
+            width: 100%; /* Todos los botones ocupan el ancho completo */
+            max-width: 300px; /* Ancho máximo de los botones */
         }
         .save-button {
             background-color: #e0e0e0;
             color: #333333;
         }
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
         input[type="text"] {
-            width: 200px;
+            width: 100%; /* Ancho completo para los campos de texto */
+            max-width: 300px; /* Ancho máximo para los campos de texto */
             padding: 8px;
             margin: 5px 0;
             border: 1px solid #cccccc;
             border-radius: 5px;
         }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div id="header">
-        <button onclick="goToStartScreen()">Inicio</button>
-        <div>
-            <button onclick="editUserInfo()">Editar Info</button>
-            <button onclick="showUserInfo()">Ver Info</button>
-        </div>
+        <button onclick="showUserInfo()">Ver Info</button>
+        <button onclick="editUserInfo()">Editar Info</button>
     </div>
 
     <div id="main">
@@ -84,12 +78,24 @@
             altura: ""
         };
 
-        function goToStartScreen() {
-            showRegisterScreen();
-        }
-
         function showUserInfo() {
             alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
+        }
+
+        function showLoginScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Inicio de Sesión</h2>
+                <label>Nombre de Usuario:</label>
+                <input type="text" id="username"><br><br>
+                <button class="save-button" onclick="login()">Iniciar Sesión</button><br><br>
+                <a href="#" onclick="showRegisterScreen()">¿No tienes cuenta? Regístrate aquí</a>
+            `;
+        }
+
+        function login() {
+            userInfo.nombre = document.getElementById('username').value;
+            showMainScreen();
         }
 
         function showRegisterScreen() {
@@ -99,10 +105,10 @@
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
                 <label>Peso (en kg):</label>
-                <input type="text" id="weight" placeholder="Peso en kg"><br><br>
+                <input type="text" id="weight"><br><br>
                 <label>Altura (en cm):</label>
-                <input type="text" id="height" placeholder="Altura en cm"><br><br>
-                <button class="save-button" onclick="register()">Registrar</button>
+                <input type="text" id="height"><br><br>
+                <button class="save-button" onclick="register()">Registrar</button><br>
             `;
         }
 
@@ -110,6 +116,7 @@
             userInfo.nombre = document.getElementById('username').value;
             userInfo.peso = document.getElementById('weight').value;
             userInfo.altura = document.getElementById('height').value;
+            alert('Registro exitoso!');
             showMainScreen();
         }
 
@@ -118,10 +125,8 @@
             main.innerHTML = `
                 <h2>Bienvenido, ${userInfo.nombre}</h2>
                 <button onclick="manageRoutines()">Rutinas</button><br>
-                <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
-                <button class="back-button" onclick="goToStartScreen()">Inicio</button>
             `;
         }
 
@@ -132,7 +137,6 @@
                 <button onclick="registerRoutines()">Registrar Rutinas</button><br>
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
             `;
         }
 
@@ -149,7 +153,6 @@
                 <label>Descripción:</label>
                 <input type="text" id="description"><br><br>
                 <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
             `;
         }
 
@@ -166,7 +169,6 @@
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
             `;
         }
 
@@ -178,36 +180,12 @@
                     <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
                     <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
             `;
         }
 
         function deleteRoutine(routine) {
             alert(`Rutina ${routine} eliminada.`);
-            deleteRoutines();
-        }
-
-        function editUserInfo() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Editar Información del Usuario</h2>
-                <label>Nombre de Usuario:</label>
-                <input type="text" id="username" value="${userInfo.nombre}"><br><br>
-                <label>Peso (en kg):</label>
-                <input type="text" id="weight" value="${userInfo.peso}" placeholder="Peso en kg"><br><br>
-                <label>Altura (en cm):</label>
-                <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
-                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
-            `;
-        }
-
-        function saveUserInfo() {
-            userInfo.nombre = document.getElementById('username').value;
-            userInfo.peso = document.getElementById('weight').value;
-            userInfo.altura = document.getElementById('height').value;
-            alert('Información actualizada con éxito!');
-            showMainScreen();
+            deleteRoutines(); // Actualizar la vista de eliminación de rutinas
         }
 
         function registerExercise() {
@@ -219,7 +197,6 @@
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Ver Progreso</h2>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
                 <canvas id="weightChart"></canvas><br>
                 <canvas id="heightChart"></canvas><br>
             `;
@@ -230,17 +207,25 @@
                 data: {
                     labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
                     datasets: [{
-                        label: 'Peso',
-                        data: [70, 69.5, 69, 68.5, 68],
+                        label: 'Peso (kg)',
+                        data: [70, 71, 70.5, 72, 71],
                         borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        fill: false
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true
                     }]
                 },
                 options: {
-                    scales: {
-                        y: {
-                            beginAtZero: false
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' kg';
+                                }
+                            }
                         }
                     }
                 }
@@ -252,22 +237,55 @@
                 data: {
                     labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
                     datasets: [{
-                        label: 'Altura',
-                        data: [170, 170, 170, 170, 170],
+                        label: 'Altura (cm)',
+                        data: [175, 175.2, 175.1, 175.3, 175.2],
                         borderColor: 'rgba(153, 102, 255, 1)',
-                        borderWidth: 2,
-                        fill: false
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true
                     }]
                 },
                 options: {
-                    scales: {
-                        y: {
-                            beginAtZero: false
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' cm';
+                                }
+                            }
                         }
                     }
                 }
             });
         }
+
+        function editUserInfo() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Editar Información del Usuario</h2>
+                <label>Nombre:</label>
+                <input type="text" id="newName" value="${userInfo.nombre}"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="newWeight" value="${userInfo.peso}"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="newHeight" value="${userInfo.altura}"><br><br>
+                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+            `;
+        }
+
+        function saveUserInfo() {
+            userInfo.nombre = document.getElementById('newName').value;
+            userInfo.peso = document.getElementById('newWeight').value;
+            userInfo.altura = document.getElementById('newHeight').value;
+            alert('Información actualizada con éxito!');
+            showMainScreen();
+        }
+
+        // Inicialización de la aplicación
+        showLoginScreen();
     </script>
 </body>
 </html>
