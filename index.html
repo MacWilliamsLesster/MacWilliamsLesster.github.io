@@ -7,90 +7,67 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff; /* Fondo blanco */
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
             overflow: hidden;
         }
         #header {
             display: flex;
-            justify-content: space-between;
-            padding: 10px 20px; /* Reducir tamaño de la cabecera */
-            background: linear-gradient(135deg, #333333, #555555); /* Gradiente de gris oscuro a gris medio */
+            justify-content: flex-end;
+            padding: 20px;
+            background: linear-gradient(135deg, #333333, #555555);
             color: white;
-        }
-        #header button {
-            font-size: 12px; /* Reducir tamaño de los botones de la cabecera */
-            padding: 5px 10px;
         }
         #main {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 50px;
-            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
-            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
+            overflow-y: auto;
+            max-height: 90vh;
         }
         button {
-            padding: 10px 40px; /* Botones más anchos */
+            padding: 10px 50px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #e0e0e0; /* Gris claro para los botones */
-            color: #333333; /* Color de texto oscuro para contraste */
+            background-color: #e0e0e0;
+            color: #333333;
             border: none;
             border-radius: 5px;
-            width: 100%; /* Todos los botones tendrán el mismo ancho */
-            max-width: 300px; /* Ancho máximo para botones */
-        }
-        .back-button {
-            background-color: #b0b0b0; /* Gris más oscuro para el botón Volver */
-            color: #333333;
+            width: 100%;
+            max-width: 300px;
         }
         .save-button {
-            background-color: #e0e0e0; /* Gris claro para el botón Guardar */
+            background-color: #e0e0e0;
             color: #333333;
         }
-        canvas {
-            max-width: 100%;
-            height: auto;
-        }
-        input[type="text"], input[type="date"], input[type="time"] {
-            width: 200px;
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
             padding: 8px;
             margin: 5px 0;
-            border: 1px solid #cccccc; /* Borde gris claro para los campos de texto */
+            border: 1px solid #cccccc;
             border-radius: 5px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        a {
+            color: #007BFF;
+            text-decoration: none;
         }
-        li {
-            background-color: #f0f0f0;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        a:hover {
+            text-decoration: underline;
         }
-        li button {
-            margin-left: 10px;
-            background-color: #ff6961; /* Color rojo para el botón de eliminar */
-            color: white;
-            padding: 5px 10px;
-            font-size: 14px;
+        .back-button {
+            margin-top: 20px;
+            background-color: #ccc;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <button onclick="goToStartScreen()">Inicio</button>
-        <div>
-            <button onclick="showUserInfo()">Ver Info</button>
-            <button onclick="editUserInfo()">Editar Info</button>
-        </div>
+        <button onclick="showUserInfo()">Ver Info</button>
+        <button onclick="editUserInfo()">Editar Info</button>
     </div>
 
     <div id="main">
@@ -105,10 +82,6 @@
             altura: ""
         };
 
-        function goToStartScreen() {
-            showLoginScreen();
-        }
-
         function showUserInfo() {
             alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
         }
@@ -116,35 +89,12 @@
         function showLoginScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Iniciar Sesión</h2>
+                <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
                 <button class="save-button" onclick="login()">Iniciar Sesión</button><br><br>
-                <a href="#" onclick="showRegisterScreen()">Registrar Usuario</a>
+                <a href="#" onclick="showRegisterScreen()">¿No tienes cuenta? Regístrate aquí</a>
             `;
-        }
-
-        function showRegisterScreen() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Registrar Usuario</h2>
-                <label>Nombre:</label>
-                <input type="text" id="regName"><br><br>
-                <label>Peso (en kg):</label>
-                <input type="text" id="regWeight"><br><br>
-                <label>Altura (en cm):</label>
-                <input type="text" id="regHeight"><br><br>
-                <button class="save-button" onclick="register()">Registrar</button><br>
-                <button class="back-button" onclick="showLoginScreen()">Volver</button>
-            `;
-        }
-
-        function register() {
-            userInfo.nombre = document.getElementById('regName').value;
-            userInfo.peso = document.getElementById('regWeight').value;
-            userInfo.altura = document.getElementById('regHeight').value;
-            alert('Usuario registrado con éxito!');
-            showMainScreen();
         }
 
         function login() {
@@ -152,12 +102,34 @@
             showMainScreen();
         }
 
+        function showRegisterScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Registro de Usuario</h2>
+                <label>Nombre de Usuario:</label>
+                <input type="text" id="username"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="weight"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="height"><br><br>
+                <button class="save-button" onclick="register()">Registrar</button><br>
+                <button class="back-button" onclick="showLoginScreen()">Volver</button>
+            `;
+        }
+
+        function register() {
+            userInfo.nombre = document.getElementById('username').value;
+            userInfo.peso = document.getElementById('weight').value;
+            userInfo.altura = document.getElementById('height').value;
+            alert('Registro exitoso!');
+            showMainScreen();
+        }
+
         function showMainScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Bienvenido, ${userInfo.nombre}</h2>
-                <button onclick="manageRoutines()">Administrar Rutinas</button><br>
-                <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
+                <button onclick="manageRoutines()">Rutinas</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
             `;
@@ -166,7 +138,7 @@
         function manageRoutines() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Administrar Rutinas</h2>
+                <h2>Rutinas</h2>
                 <button onclick="registerRoutines()">Registrar Rutinas</button><br>
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
@@ -221,8 +193,83 @@
         }
 
         function deleteRoutine(routine) {
-            alert(routine + ' eliminada con éxito!');
+            alert(`Rutina ${routine} eliminada.`);
             deleteRoutines();
+        }
+
+        function registerExercise() {
+            alert('Funcionalidad no implementada en la versión web.');
+            showMainScreen();
+        }
+
+        function viewProgress() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Ver Progreso</h2>
+                <canvas id="weightChart"></canvas><br>
+                <canvas id="heightChart"></canvas><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
+            `;
+
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                    datasets: [{
+                        label: 'Peso (kg)',
+                        data: [70, 71, 70.5, 72, 71],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' kg';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const heightCtx = document.getElementById('heightChart').getContext('2d');
+            new Chart(heightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                    datasets: [{
+                        label: 'Altura (cm)',
+                        data: [175, 175.2, 175.1, 175.3, 175.2],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' cm';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function editUserInfo() {
@@ -230,82 +277,26 @@
             main.innerHTML = `
                 <h2>Editar Información del Usuario</h2>
                 <label>Nombre:</label>
-                <input type="text" id="editName" value="${userInfo.nombre}"><br><br>
+                <input type="text" id="newName" value="${userInfo.nombre}"><br><br>
                 <label>Peso (en kg):</label>
-                <input type="text" id="editWeight" value="${userInfo.peso}"><br><br>
+                <input type="text" id="newWeight" value="${userInfo.peso}"><br><br>
                 <label>Altura (en cm):</label>
-                <input type="text" id="editHeight" value="${userInfo.altura}"><br><br>
+                <input type="text" id="newHeight" value="${userInfo.altura}"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
         }
 
         function saveUserInfo() {
-            userInfo.nombre = document.getElementById('editName').value;
-            userInfo.peso = document.getElementById('editWeight').value;
-            userInfo.altura = document.getElementById('editHeight').value;
+            userInfo.nombre = document.getElementById('newName').value;
+            userInfo.peso = document.getElementById('newWeight').value;
+            userInfo.altura = document.getElementById('newHeight').value;
             alert('Información actualizada con éxito!');
             showMainScreen();
         }
 
-        function registerExercise() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Registrar Ejercicio Realizado</h2>
-                <label>Selecciona una rutina:</label>
-                <select id="routineSelect">
-                    <option>Rutina 1</option>
-                    <option>Rutina 2</option>
-                </select><br><br>
-                <label>Fecha:</label>
-                <input type="date" id="exerciseDate"><br><br>
-                <label>Hora:</label>
-                <input type="time" id="exerciseTime"><br><br>
-                <button class="save-button" onclick="saveExercise()">Guardar Ejercicio</button><br>
-                <button class="back-button" onclick="showMainScreen()">Volver</button>
-            `;
-        }
-
-        function saveExercise() {
-            const routine = document.getElementById('routineSelect').value;
-            const date = document.getElementById('exerciseDate').value;
-            const time = document.getElementById('exerciseTime').value;
-            alert(`Ejercicio de ${routine} registrado en ${date} a las ${time}.`);
-            showMainScreen();
-        }
-
-        function viewProgress() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Progreso</h2>
-                <canvas id="progressChart"></canvas><br>
-                <button class="back-button" onclick="showMainScreen()">Volver</button>
-            `;
-            const ctx = document.getElementById('progressChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
-                    datasets: [{
-                        label: 'Peso',
-                        data: [70, 69.5, 69, 68.5, 68],
-                        borderColor: 'rgb(255, 99, 132)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false
-                        }
-                    }
-                }
-            });
-        }
-
-        showLoginScreen(); // Iniciar en la pantalla de inicio de sesión
+        // Inicialización de la aplicación
+        showLoginScreen();
     </script>
 </body>
 </html>
