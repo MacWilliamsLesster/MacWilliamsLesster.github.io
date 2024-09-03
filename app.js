@@ -10,7 +10,23 @@ function login() {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-screen').style.display = 'block';
     } else {
-        alert('Usuario no encontrado.');
+        alert('Usuario no encontrado. Si es un nuevo usuario, regístrese primero.');
+    }
+}
+
+function register() {
+    const username = document.getElementById('username').value;
+    const storedUser = JSON.parse(localStorage.getItem(username));
+
+    if (storedUser) {
+        alert('El nombre de usuario ya existe. Por favor, elija otro.');
+    } else {
+        userInfo = {
+            username: username,
+            routines: []
+        };
+        localStorage.setItem(username, JSON.stringify(userInfo));
+        alert('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
     }
 }
 
