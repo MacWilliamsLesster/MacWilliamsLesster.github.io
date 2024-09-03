@@ -28,7 +28,7 @@
             max-height: 90vh;
         }
         button {
-            padding: 10px 50px; /* Botones más anchos */
+            padding: 10px 50px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
@@ -36,16 +36,16 @@
             color: #333333;
             border: none;
             border-radius: 5px;
-            width: 100%; /* Todos los botones ocupan el ancho completo */
-            max-width: 300px; /* Ancho máximo de los botones */
+            width: 100%;
+            max-width: 300px;
         }
         .save-button {
             background-color: #e0e0e0;
             color: #333333;
         }
         input[type="text"] {
-            width: 100%; /* Ancho completo para los campos de texto */
-            max-width: 300px; /* Ancho máximo para los campos de texto */
+            width: 100%;
+            max-width: 300px;
             padding: 8px;
             margin: 5px 0;
             border: 1px solid #cccccc;
@@ -57,6 +57,10 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #ccc;
         }
     </style>
 </head>
@@ -109,6 +113,7 @@
                 <label>Altura (en cm):</label>
                 <input type="text" id="height"><br><br>
                 <button class="save-button" onclick="register()">Registrar</button><br>
+                <button class="back-button" onclick="showLoginScreen()">Volver</button>
             `;
         }
 
@@ -137,6 +142,7 @@
                 <button onclick="registerRoutines()">Registrar Rutinas</button><br>
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
         }
 
@@ -153,6 +159,7 @@
                 <label>Descripción:</label>
                 <input type="text" id="description"><br><br>
                 <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
+                <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
         }
 
@@ -169,6 +176,7 @@
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
                 </ul>
+                <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
         }
 
@@ -180,12 +188,13 @@
                     <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
                     <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
+                <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
         }
 
         function deleteRoutine(routine) {
             alert(`Rutina ${routine} eliminada.`);
-            deleteRoutines(); // Actualizar la vista de eliminación de rutinas
+            deleteRoutines();
         }
 
         function registerExercise() {
@@ -199,6 +208,7 @@
                 <h2>Ver Progreso</h2>
                 <canvas id="weightChart"></canvas><br>
                 <canvas id="heightChart"></canvas><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
 
             const weightCtx = document.getElementById('weightChart').getContext('2d');
@@ -273,6 +283,7 @@
                 <label>Altura (en cm):</label>
                 <input type="text" id="newHeight" value="${userInfo.altura}"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
         }
 
