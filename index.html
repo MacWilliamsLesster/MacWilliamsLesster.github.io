@@ -48,7 +48,7 @@
             background-color: #e0e0e0;
             color: #333333;
         }
-        input[type="text"] {
+        input[type="text"], input[type="datetime-local"] {
             width: 100%;
             max-width: 300px;
             padding: 8px;
@@ -287,6 +287,29 @@
                     }
                 }
             });
+        }
+
+        function editUserInfo() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Editar Información del Usuario</h2>
+                <label>Nombre:</label>
+                <input type="text" id="editName" value="${userInfo.nombre}"><br><br>
+                <label>Peso:</label>
+                <input type="text" id="editWeight" value="${userInfo.peso}"><br><br>
+                <label>Altura:</label>
+                <input type="text" id="editHeight" value="${userInfo.altura}"><br><br>
+                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
+            `;
+        }
+
+        function saveUserInfo() {
+            userInfo.nombre = document.getElementById('editName').value;
+            userInfo.peso = document.getElementById('editWeight').value;
+            userInfo.altura = document.getElementById('editHeight').value;
+            alert('Información actualizada con éxito!');
+            showMainScreen();
         }
 
         showLoginScreen(); // Inicia con la pantalla de inicio de sesión
