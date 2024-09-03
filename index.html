@@ -7,69 +7,71 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0e0e0; /* Color de fondo más claro */
+            background-color: #e0e0e0;
             margin: 0;
             padding: 0;
         }
         #header {
             display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #b0b0b0; /* Fondo más claro para el encabezado */
-            color: black;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #616161;
+            color: white;
+        }
+        #header button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #424242;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
         #main {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px;
-            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
-            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         button {
-            padding: 12px 24px; /* Tamaño uniforme para todos los botones */
+            padding: 15px 30px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #9e9e9e;
+            color: #212121;
             border: none;
-            border-radius: 4px;
-            display: block;
-            width: 200px; /* Tamaño uniforme de largo */
+            border-radius: 5px;
         }
         .back-button {
-            background-color: #7f8c8d;
-            color: white;
+            background-color: #757575;
         }
         .save-button {
-            background-color: #95a5a6;
-            color: white;
-        }
-        .edit-button {
-            background-color: #616a6b;
-            color: white;
-        }
-        .start-button {
-            background-color: #2c3e50;
-            color: white;
+            background-color: #616161;
         }
         canvas {
             max-width: 100%;
             height: auto;
         }
         input[type="text"] {
-            width: 250px; /* Campo de texto más amplio */
-            padding: 8px;
+            width: 250px;
+            padding: 10px;
             margin: 5px 0;
+            border: 1px solid #bdbdbd;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #212121;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <button onclick="closeApp()">Cerrar App</button>
-        <div>
-            <button onclick="showUserInfo()" class="edit-button">Ver Info</button>
-            <button onclick="editUserInfo()" class="edit-button">Editar Info</button>
-        </div>
+        <button onclick="showUserInfo()">Ver Info</button>
+        <button onclick="editUserInfo()">Editar Información</button>
     </div>
 
     <div id="main">
@@ -84,22 +86,13 @@
             altura: ""
         };
 
-        function closeApp() {
-            alert('App cerrada');
-        }
-
-        function showUserInfo() {
-            alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
-        }
-
         function showLoginScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
-                <button class="save-button" onclick="login()">Iniciar Sesión</button><br>
-                <button class="start-button" onclick="showMainScreen()">Inicio</button>
+                <button class="save-button" onclick="login()">Iniciar Sesión</button>
             `;
         }
 
@@ -148,134 +141,143 @@
         }
 
         function saveRoutine() {
-            alert('Rutina guard
-    function viewRoutines() {
-        const main = document.getElementById('main');
-        main.innerHTML = `
-            <h2>Ver Rutinas</h2>
-            <ul>
-                <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
-                <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
-            </ul>
-            <button class="back-button" onclick="manageRoutines()">Atrás</button>
-        `;
-    }
+            alert('Rutina guardada con éxito!');
+            manageRoutines();
+        }
 
-    function deleteRoutines() {
-        const main = document.getElementById('main');
-        main.innerHTML = `
-            <h2>Eliminar Rutinas</h2>
-            <ul>
-                <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
-                <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
-            </ul>
-            <button class="back-button" onclick="manageRoutines()">Atrás</button>
-        `;
-    }
+        function viewRoutines() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Ver Rutinas</h2>
+                <ul>
+                    <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
+                    <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
+                </ul>
+                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+            `;
+        }
 
-    function deleteRoutine(routine) {
-        alert(`Rutina ${routine} eliminada.`);
-        deleteRoutines(); // Actualizar la vista de eliminación de rutinas
-    }
+        function deleteRoutines() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Eliminar Rutinas</h2>
+                <ul>
+                    <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
+                    <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
+                </ul>
+                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+            `;
+        }
 
-    function editUserInfo() {
-        const main = document.getElementById('main');
-        main.innerHTML = `
-            <h2>Editar Información del Usuario</h2>
-            <label>Nombre de Usuario:</label>
-            <input type="text" id="username" value="${userInfo.nombre}"><br><br>
-            <label>Peso (en kg):</label>
-            <input type="text" id="weight" value="${userInfo.peso}" placeholder="Peso en kg"><br><br>
-            <label>Altura (en cm):</label>
-            <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
-            <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
-            <button class="back-button" onclick="showMainScreen()">Atrás</button>
-        `;
-    }
+        function deleteRoutine(routine) {
+            alert(`Rutina ${routine} eliminada.`);
+            deleteRoutines(); // Actualizar la vista de eliminación de rutinas
+        }
 
-    function saveUserInfo() {
-        userInfo.nombre = document.getElementById('username').value;
-        userInfo.peso = document.getElementById('weight').value;
-        userInfo.altura = document.getElementById('height').value;
-        alert('Información actualizada con éxito!');
-        showMainScreen();
-    }
+        function editUserInfo() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Editar Información del Usuario</h2>
+                <label>Nombre de Usuario:</label>
+                <input type="text" id="username" value="${userInfo.nombre}"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="weight" value="${userInfo.peso}" placeholder="Peso en kg"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
+                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+                <button class="back-button" onclick="showMainScreen()">Atrás</button>
+            `;
+        }
 
-    function registerExercise() {
-        alert('Funcionalidad no implementada en la versión web.');
-        showMainScreen();
-    }
+        function saveUserInfo() {
+            userInfo.nombre = document.getElementById('username').value;
+            userInfo.peso = document.getElementById('weight').value;
+            userInfo.altura = document.getElementById('height').value;
+            alert('Información actualizada con éxito!');
+            showMainScreen();
+        }
 
-    function viewProgress() {
-        const main = document.getElementById('main');
-        main.innerHTML = `
-            <h2>Ver Progreso</h2>
-            <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
-            <canvas id="weightChart"></canvas><br>
-            <canvas id="heightChart"></canvas><br>
-        `;
+        function registerExercise() {
+            alert('Funcionalidad no implementada en la versión web.');
+            showMainScreen();
+        }
 
-        const weightCtx = document.getElementById('weightChart').getContext('2d');
-        new Chart(weightCtx, {
-            type: 'line',
-            data: {
-                labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
-                datasets: [{
-                    label: 'Peso (kg)',
-                    data: [70, 71, 70.5, 72, 71],
-                    borderColor: 'rgba(255, 99, 132, 1)', /* Color llamativo */
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)', /* Color llamativo */
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `Peso: ${tooltipItem.raw} kg`;
+        function viewProgress() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Ver Progreso</h2>
+                <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
+                <canvas id="weightChart"></canvas><br>
+                <canvas id="heightChart"></canvas><br>
+            `;
+
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                    datasets: [{
+                        label: 'Peso (kg)',
+                        data: [70, 71, 70.5, 72, 71],
+                        borderColor: 'rgba(75, 75, 75, 1)',
+                        backgroundColor: 'rgba(75, 75, 75, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' kg';
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        const heightCtx = document.getElementById('heightChart').getContext('2d');
-        new Chart(heightCtx, {
-            type: 'line',
-            data: {
-                labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
-                datasets: [{
-                    label: 'Altura (cm)',
-                    data: [170, 171, 170.5, 172, 171],
-                    borderColor: 'rgba(54, 162, 235, 1)', /* Color llamativo */
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', /* Color llamativo */
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `Altura: ${tooltipItem.raw} cm`;
+            const heightCtx = document.getElementById('heightChart').getContext('2d');
+            new Chart(heightCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
+                    datasets: [{
+                        label: 'Altura (cm)',
+                        data: [175, 175.2, 175.1, 175.3, 175.2],
+                        borderColor: 'rgba(153, 153, 153, 1)',
+                        backgroundColor: 'rgba(153, 153, 153, 0.2)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' cm';
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
-    // Inicializa la pantalla de inicio de sesión
-    showLoginScreen();
-</script>
+        function closeApp() {
+            alert('App cerrada');
+        }
+
+        // Mostrar la pantalla de inicio de sesión al cargar la página
+        showLoginScreen();
+    </script>
+</body>
+</html>
