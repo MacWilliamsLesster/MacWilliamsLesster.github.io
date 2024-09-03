@@ -7,47 +7,37 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #e0e0e0;
             margin: 0;
             padding: 0;
-            overflow: hidden;
         }
         #header {
             display: flex;
             justify-content: space-between;
             padding: 20px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #b0b0b0;
+            color: #000;
         }
         #main {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 50px;
-            overflow-y: auto;
-            max-height: 90vh;
+            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
+            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
         }
         button {
-            padding: 15px 30px;
+            padding: 10px 20px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #b0b0b0;
-            color: white;
+            background-color: #808080;
+            color: #fff;
             border: none;
-            width: 200px;
+            border-radius: 5px;
         }
-        .small-button {
-            padding: 5px 10px;
-            font-size: 14px;
-            background-color: #b0b0b0;
-            color: white;
-            border: none;
-            margin: 5px;
-        }
-        .back-button {
-            background-color: #FF5722;
-            color: white;
+        button:hover {
+            background-color: #666;
         }
         canvas {
             max-width: 100%;
@@ -57,13 +47,15 @@
             width: 200px;
             padding: 8px;
             margin: 5px 0;
+            border: 1px solid #808080;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <button class="small-button" onclick="showUserInfo()">Ver Info</button>
-        <button class="small-button" onclick="editUserInfo()">Editar Info</button>
+        <button onclick="showMainScreen()">Inicio</button>
+        <button onclick="showUserInfo()">Ver Info</button>
     </div>
 
     <div id="main">
@@ -78,23 +70,32 @@
             altura: ""
         };
 
-        function closeApp() {
-            alert('App cerrada');
-        }
-
-        function showUserInfo() {
-            alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
-        }
-
         function showMainScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Bienvenido, ${userInfo.nombre}</h2>
+                <h2>Bienvenido, ${userInfo.nombre || "Invitado"}</h2>
                 <button onclick="manageRoutines()">Rutinas</button><br>
+                <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
-                <button class="back-button" onclick="closeApp()">Salir</button>
+                <button onclick="closeApp()">Salir</button>
             `;
+        }
+
+        function showLoginScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Inicio de Sesión</h2>
+                <label>Nombre de Usuario:</label>
+                <input type="text" id="username"><br><br>
+                <button onclick="login()">Iniciar Sesión</button>
+                <button onclick="showMainScreen()">Inicio</button>
+            `;
+        }
+
+        function login() {
+            userInfo.nombre = document.getElementById('username').value;
+            showMainScreen();
         }
 
         function manageRoutines() {
@@ -104,7 +105,7 @@
                 <button onclick="registerRoutines()">Registrar Rutinas</button><br>
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
+                <button onclick="showMainScreen()">Inicio</button>
             `;
         }
 
@@ -120,8 +121,8 @@
                 <input type="text" id="sets"><br><br>
                 <label>Descripción:</label>
                 <input type="text" id="description"><br><br>
-                <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button onclick="saveRoutine()">Guardar Rutina</button><br>
+                <button onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -137,9 +138,8 @@
                 <ul>
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
-                    <!-- Aquí se agregarán las rutinas registradas -->
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -148,10 +148,10 @@
             main.innerHTML = `
                 <h2>Eliminar Rutinas</h2>
                 <ul>
-                    <li>Rutina 1 <button class="small-button" onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
-                    <li>Rutina 2 <button class="small-button" onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
+                    <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
+                    <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -170,8 +170,8 @@
                 <input type="text" id="weight" value="${userInfo.peso}" placeholder="Peso en kg"><br><br>
                 <label>Altura (en cm):</label>
                 <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
-                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
+                <button onclick="saveUserInfo()">Guardar Cambios</button><br>
+                <button onclick="showMainScreen()">Inicio</button>
             `;
         }
 
@@ -192,7 +192,7 @@
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Ver Progreso</h2>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
+                <button onclick="showMainScreen()">Inicio</button><br>
                 <canvas id="weightChart"></canvas><br>
                 <canvas id="heightChart"></canvas><br>
             `;
@@ -205,8 +205,8 @@
                     datasets: [{
                         label: 'Peso (kg)',
                         data: [70, 71, 70.5, 72, 71],
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 75, 75, 1)',
+                        backgroundColor: 'rgba(75, 75, 75, 0.2)',
                         fill: true
                     }]
                 },
@@ -235,15 +235,14 @@
                     datasets: [{
                         label: 'Altura (cm)',
                         data: [175, 175.2, 175.1, 175.3, 175.2],
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 153, 153, 1)',
+                        backgroundColor: 'rgba(153, 153, 153, 0.2)',
                         fill: true
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
-                       
                         legend: {
                             display: true
                         },
@@ -259,8 +258,12 @@
             });
         }
 
-        // Mostrar la pantalla de inicio de sesión al cargar la página
-        showMainScreen();
+        function closeApp() {
+            alert('Funcionalidad de cerrar la aplicación no implementada.');
+        }
+
+        // Mostrar la pantalla de inicio de sesión por defecto al cargar la página
+        showLoginScreen();
     </script>
 </body>
 </html>
