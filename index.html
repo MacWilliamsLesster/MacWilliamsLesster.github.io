@@ -7,71 +7,67 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0e0e0;
+            background-color: #e0e0e0; /* Color de fondo más claro */
             margin: 0;
             padding: 0;
         }
         #header {
             display: flex;
-            justify-content: flex-end;
-            padding: 10px;
-            background-color: #616161;
-            color: white;
-        }
-        #header button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #424242;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #b0b0b0; /* Fondo más claro para el encabezado */
+            color: black;
         }
         #main {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
+            padding: 50px;
+            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
+            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
         }
         button {
-            padding: 15px 30px;
+            padding: 12px 24px; /* Tamaño uniforme para todos los botones */
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #9e9e9e;
-            color: #212121;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
         }
         .back-button {
-            background-color: #757575;
+            background-color: #7f8c8d;
+            color: white;
         }
         .save-button {
-            background-color: #616161;
+            background-color: #95a5a6;
+            color: white;
+        }
+        .edit-button {
+            background-color: #616a6b;
+            color: white;
+        }
+        .start-button {
+            background-color: #2c3e50;
+            color: white;
         }
         canvas {
             max-width: 100%;
             height: auto;
         }
         input[type="text"] {
-            width: 250px;
-            padding: 10px;
+            width: 250px; /* Campo de texto más amplio */
+            padding: 8px;
             margin: 5px 0;
-            border: 1px solid #bdbdbd;
-            border-radius: 5px;
-        }
-        h2 {
-            color: #212121;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <button onclick="showUserInfo()">Ver Info</button>
-        <button onclick="editUserInfo()">Editar Información</button>
+        <button onclick="closeApp()">Cerrar App</button>
+        <div>
+            <button onclick="showUserInfo()" class="edit-button">Ver Info</button>
+            <button onclick="editUserInfo()" class="edit-button">Editar Info</button>
+        </div>
     </div>
 
     <div id="main">
@@ -86,13 +82,22 @@
             altura: ""
         };
 
+        function closeApp() {
+            alert('App cerrada');
+        }
+
+        function showUserInfo() {
+            alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
+        }
+
         function showLoginScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
-                <button class="save-button" onclick="login()">Iniciar Sesión</button>
+                <button class="save-button" onclick="login()">Iniciar Sesión</button><br>
+                <button class="start-button" onclick="showMainScreen()">Inicio</button>
             `;
         }
 
@@ -116,10 +121,10 @@
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Rutinas</h2>
-                <button onclick="registerRoutines()">Registrar Rutinas</button><br>
+                <button onclick="registerRoutines()">Registrar Rutinas</button><br
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
+                <button class="start-button" onclick="showMainScreen()">Inicio</button>
             `;
         }
 
@@ -136,7 +141,7 @@
                 <label>Descripción:</label>
                 <input type="text" id="description"><br><br>
                 <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button class="start-button" onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -153,7 +158,7 @@
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button class="start-button" onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -165,7 +170,7 @@
                     <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
                     <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
-                <button class="back-button" onclick="manageRoutines()">Atrás</button>
+                <button class="start-button" onclick="manageRoutines()">Inicio</button>
             `;
         }
 
@@ -185,7 +190,7 @@
                 <label>Altura (en cm):</label>
                 <input type="text" id="height" value="${userInfo.altura}" placeholder="Altura en cm"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button>
+                <button class="start-button" onclick="showMainScreen()">Inicio</button>
             `;
         }
 
@@ -206,7 +211,7 @@
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Ver Progreso</h2>
-                <button class="back-button" onclick="showMainScreen()">Atrás</button><br>
+                <button class="start-button" onclick="showMainScreen()">Inicio</button><br>
                 <canvas id="weightChart"></canvas><br>
                 <canvas id="heightChart"></canvas><br>
             `;
@@ -219,8 +224,8 @@
                     datasets: [{
                         label: 'Peso (kg)',
                         data: [70, 71, 70.5, 72, 71],
-                        borderColor: 'rgba(75, 75, 75, 1)',
-                        backgroundColor: 'rgba(75, 75, 75, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)', /* Color llamativo */
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', /* Color llamativo */
                         fill: true
                     }]
                 },
@@ -233,7 +238,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(tooltipItem) {
-                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' kg';
+                                    return `Peso: ${tooltipItem.raw} kg`;
                                 }
                             }
                         }
@@ -248,9 +253,9 @@
                     labels: ['Día 1', 'Día 2', 'Día 3', 'Día 4', 'Día 5'],
                     datasets: [{
                         label: 'Altura (cm)',
-                        data: [175, 175.2, 175.1, 175.3, 175.2],
-                        borderColor: 'rgba(153, 153, 153, 1)',
-                        backgroundColor: 'rgba(153, 153, 153, 0.2)',
+                        data: [170, 171, 170.5, 172, 171],
+                        borderColor: 'rgba(54, 162, 235, 1)', /* Color llamativo */
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', /* Color llamativo */
                         fill: true
                     }]
                 },
@@ -263,7 +268,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(tooltipItem) {
-                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' cm';
+                                    return `Altura: ${tooltipItem.raw} cm`;
                                 }
                             }
                         }
@@ -272,11 +277,7 @@
             });
         }
 
-        function closeApp() {
-            alert('App cerrada');
-        }
-
-        // Mostrar la pantalla de inicio de sesión al cargar la página
+        // Inicializa la pantalla de inicio de sesión
         showLoginScreen();
     </script>
 </body>
