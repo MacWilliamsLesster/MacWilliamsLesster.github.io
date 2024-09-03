@@ -24,21 +24,29 @@
             flex-direction: column;
             align-items: center;
             padding: 50px;
-            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
-            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
+            overflow-y: auto;
+            max-height: 90vh;
         }
         button {
-            padding: 10px 20px;
+            padding: 15px 30px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #b0b0b0;
+            color: white;
+            border: none;
+            width: 200px;
+        }
+        .small-button {
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #b0b0b0;
+            color: white;
+            border: none;
+            margin: 5px;
         }
         .back-button {
             background-color: #FF5722;
-            color: white;
-        }
-        .save-button {
-            background-color: #4CAF50;
             color: white;
         }
         canvas {
@@ -54,8 +62,8 @@
 </head>
 <body>
     <div id="header">
-        <button onclick="closeApp()">Cerrar App</button>
-        <button onclick="showUserInfo()">Ver Info</button>
+        <button class="small-button" onclick="showUserInfo()">Ver Info</button>
+        <button class="small-button" onclick="editUserInfo()">Editar Info</button>
     </div>
 
     <div id="main">
@@ -78,33 +86,11 @@
             alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
         }
 
-        function showLoginScreen() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Inicio de Sesión</h2>
-                <label>Nombre de Usuario:</label>
-                <input type="text" id="username"><br><br>
-                <label>Peso (en kg):</label>
-                <input type="text" id="weight" placeholder="Peso en kg"><br><br>
-                <label>Altura (en cm):</label>
-                <input type="text" id="height" placeholder="Altura en cm"><br><br>
-                <button class="save-button" onclick="login()">Iniciar Sesión</button>
-            `;
-        }
-
-        function login() {
-            userInfo.nombre = document.getElementById('username').value;
-            userInfo.peso = document.getElementById('weight').value;
-            userInfo.altura = document.getElementById('height').value;
-            showMainScreen();
-        }
-
         function showMainScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Bienvenido, ${userInfo.nombre}</h2>
                 <button onclick="manageRoutines()">Rutinas</button><br>
-                <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
                 <button class="back-button" onclick="closeApp()">Salir</button>
@@ -151,6 +137,7 @@
                 <ul>
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
+                    <!-- Aquí se agregarán las rutinas registradas -->
                 </ul>
                 <button class="back-button" onclick="manageRoutines()">Atrás</button>
             `;
@@ -161,8 +148,8 @@
             main.innerHTML = `
                 <h2>Eliminar Rutinas</h2>
                 <ul>
-                    <li>Rutina 1 <button onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
-                    <li>Rutina 2 <button onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
+                    <li>Rutina 1 <button class="small-button" onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
+                    <li>Rutina 2 <button class="small-button" onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
                 <button class="back-button" onclick="manageRoutines()">Atrás</button>
             `;
@@ -256,6 +243,7 @@
                 options: {
                     responsive: true,
                     plugins: {
+                       
                         legend: {
                             display: true
                         },
@@ -272,7 +260,7 @@
         }
 
         // Mostrar la pantalla de inicio de sesión al cargar la página
-        showLoginScreen();
+        showMainScreen();
     </script>
 </body>
 </html>
