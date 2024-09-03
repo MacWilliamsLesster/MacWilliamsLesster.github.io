@@ -108,7 +108,7 @@
         };
 
         function showUserInfo() {
-            alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
+            alert(`Nombre: ${userInfo.nombre}\nPeso (kg): ${userInfo.peso}\nAltura (cm): ${userInfo.altura}`);
         }
 
         function showLoginScreen() {
@@ -133,9 +133,9 @@
                 <h2>Registro de Usuario</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
-                <label>Peso (en kg):</label>
+                <label>Peso (kg):</label>
                 <input type="text" id="weight"><br><br>
-                <label>Altura (en cm):</label>
+                <label>Altura (cm):</label>
                 <input type="text" id="height"><br><br>
                 <button class="save-button" onclick="register()">Registrar</button><br>
                 <button class="back-button" onclick="showLoginScreen()">Volver</button>
