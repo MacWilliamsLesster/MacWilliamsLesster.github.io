@@ -7,71 +7,61 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0e0e0;
+            background-color: #ffffff; /* Fondo blanco */
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         #header {
             display: flex;
-            justify-content: flex-end;
-            padding: 10px;
-            background-color: #616161;
+            justify-content: space-between;
+            padding: 20px;
+            background: linear-gradient(135deg, #333333, #555555); /* Gradiente de gris oscuro a gris medio */
             color: white;
-        }
-        #header button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #424242;
-            color: white;
-            border: none;
-            border-radius: 5px;
         }
         #main {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
+            padding: 50px;
+            overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
+            max-height: 90vh; /* Asegura que la altura máxima del contenedor no exceda el 90% de la altura de la ventana */
         }
         button {
-            padding: 15px 30px;
+            padding: 10px 20px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #9e9e9e;
-            color: #212121;
+            background-color: #e0e0e0; /* Gris claro para los botones */
+            color: #333333; /* Color de texto oscuro para contraste */
             border: none;
             border-radius: 5px;
         }
         .back-button {
-            background-color: #757575;
+            background-color: #b0b0b0; /* Gris más oscuro para el botón Atrás */
+            color: #333333;
         }
         .save-button {
-            background-color: #616161;
+            background-color: #e0e0e0; /* Gris claro para el botón Guardar */
+            color: #333333;
         }
         canvas {
             max-width: 100%;
             height: auto;
         }
         input[type="text"] {
-            width: 250px;
-            padding: 10px;
+            width: 200px;
+            padding: 8px;
             margin: 5px 0;
-            border: 1px solid #bdbdbd;
+            border: 1px solid #cccccc; /* Borde gris claro para los campos de texto */
             border-radius: 5px;
-        }
-        h2 {
-            color: #212121;
         }
     </style>
 </head>
 <body>
     <div id="header">
+        <button onclick="goToStartScreen()">Inicio</button>
         <button onclick="showUserInfo()">Ver Info</button>
-        <button onclick="editUserInfo()">Editar Información</button>
     </div>
 
     <div id="main">
@@ -86,18 +76,32 @@
             altura: ""
         };
 
+        function goToStartScreen() {
+            showLoginScreen();
+        }
+
+        function showUserInfo() {
+            alert(`Nombre: ${userInfo.nombre}\nPeso: ${userInfo.peso}\nAltura: ${userInfo.altura}`);
+        }
+
         function showLoginScreen() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
+                <label>Peso (en kg):</label>
+                <input type="text" id="weight" placeholder="Peso en kg"><br><br>
+                <label>Altura (en cm):</label>
+                <input type="text" id="height" placeholder="Altura en cm"><br><br>
                 <button class="save-button" onclick="login()">Iniciar Sesión</button>
             `;
         }
 
         function login() {
             userInfo.nombre = document.getElementById('username').value;
+            userInfo.peso = document.getElementById('weight').value;
+            userInfo.altura = document.getElementById('height').value;
             showMainScreen();
         }
 
@@ -106,9 +110,10 @@
             main.innerHTML = `
                 <h2>Bienvenido, ${userInfo.nombre}</h2>
                 <button onclick="manageRoutines()">Rutinas</button><br>
+                <button onclick="editUserInfo()">Editar Información del Usuario</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
-                <button class="back-button" onclick="closeApp()">Salir</button>
+                <button class="back-button" onclick="goToStartScreen()">Inicio</button>
             `;
         }
 
@@ -219,8 +224,8 @@
                     datasets: [{
                         label: 'Peso (kg)',
                         data: [70, 71, 70.5, 72, 71],
-                        borderColor: 'rgba(75, 75, 75, 1)',
-                        backgroundColor: 'rgba(75, 75, 75, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         fill: true
                     }]
                 },
@@ -249,8 +254,8 @@
                     datasets: [{
                         label: 'Altura (cm)',
                         data: [175, 175.2, 175.1, 175.3, 175.2],
-                        borderColor: 'rgba(153, 153, 153, 1)',
-                        backgroundColor: 'rgba(153, 153, 153, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
                         fill: true
                     }]
                 },
@@ -270,10 +275,6 @@
                     }
                 }
             });
-        }
-
-        function closeApp() {
-            alert('App cerrada');
         }
 
         // Mostrar la pantalla de inicio de sesión al cargar la página
