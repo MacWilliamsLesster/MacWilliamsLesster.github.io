@@ -232,11 +232,9 @@
         }
 
         function deleteRoutine(index) {
-            if (confirm('¿Seguro que quieres eliminar esta rutina?')) {
-                routines.splice(index, 1);
-                saveToFile("routines", routines);
-                deleteRoutines(); // Recargar la lista de rutinas
-            }
+            routines.splice(index, 1);
+            saveToFile("routines", routines);
+            deleteRoutines(); // Recargar la lista de rutinas
         }
 
         function registerExercise() {
@@ -269,7 +267,8 @@
 
             const exerciseRecord = {
                 routine: routines[routineIndex],
-                datetime
+                datetime,
+                user: currentUser.username  // Asignar el ejercicio al usuario actual
             };
 
             let exerciseRecords = readFromFile("exerciseRecords");
@@ -290,8 +289,10 @@
 
             const ctx = document.getElementById('progressChart').getContext('2d');
             const exerciseRecords = readFromFile("exerciseRecords");
-            const dates = exerciseRecords.map(record => new Date(record.datetime).toLocaleDateString());
-            const routinesDone = exerciseRecords.map(record => record.routine.exercise);
+            const userRecords = exerciseRecords.filter(record => record.user === currentUser.username); // Filtrar ejercicios por usuario actual
+
+            const dates = userRecords.map(record => new Date(record.datetime).toLocaleDateString());
+            const routinesDone = userRecords.map(record => record.routine.exercise);
 
             new Chart(ctx, {
                 type: 'bar',
