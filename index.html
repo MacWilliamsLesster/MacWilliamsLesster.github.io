@@ -7,121 +7,135 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
         }
-
-        #header {
-            display: flex;
-            justify-content: flex-end;
-            padding: 10px;
+        header {
             background-color: #333;
-            color: white;
-        }
-
-        button {
+            color: #fff;
             padding: 10px;
-            margin: 5px;
-            background-color: #555;
-            color: white;
+            text-align: center;
+        }
+        #main {
+            padding: 20px;
+            text-align: center;
+        }
+        .button, .save-button, .delete-button, .back-button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #333;
+            color: #fff;
             border: none;
             cursor: pointer;
         }
-
-        button:hover {
-            background-color: #777;
+        .button:hover, .save-button:hover, .delete-button:hover, .back-button:hover {
+            background-color: #555;
         }
-
-        .back-button {
-            background-color: #999;
-        }
-
-        .back-button:hover {
-            background-color: #bbb;
-        }
-
-        .save-button {
-            background-color: #4CAF50;
-        }
-
-        .save-button:hover {
-            background-color: #45a049;
-        }
-
         .delete-button {
-            background-color: #f44336;
-        }
-
-        .delete-button:hover {
-            background-color: #e57373;
-        }
-
-        #main {
-            padding: 20px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            background-color: #ddd;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: red;
         }
     </style>
 </head>
 <body>
-    <div id="header">
-        <button onclick="showUserInfo()">Ver Info</button>
-        <button onclick="editUserInfo()">Editar Info</button>
-    </div>
+    <header>
+        <h1>Fitness App</h1>
+        <button class="button" onclick="viewUserInfo()">Ver Info Usuario</button>
+        <button class="button" onclick="editUserInfo()">Editar Info Usuario</button>
+    </header>
 
     <div id="main">
-        <!-- Aquí se mostrarán las diferentes vistas -->
+        <!-- Aquí se cargará el contenido dinámico -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        let userInfo = {
-            nombre: "",
-            peso: "",
-            altura: ""
-        };
-
         let users = [];
         let routines = [];
+        let currentUser = null;
 
-        // Función para leer y escribir archivos simulados con localStorage (en vez de un sistema de archivos real)
-        function saveToFile(filename, data) {
-            localStorage.setItem(filename, JSON.stringify(data));
+        function showLoginScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Iniciar Sesión</h2>
+                <input type="text" id="username" placeholder="Nombre de Usuario"><br><br>
+                <button class="button" onclick="login()">Iniciar Sesión</button><br>
+                <a href="#" onclick="showRegisterScreen()">¿No tienes cuenta? Regístrate</a>
+            `;
         }
 
-        function readFromFile(filename) {
-            const fileContent = localStorage.getItem(filename);
-            return fileContent ? JSON.parse(fileContent) : [];
+        function showRegisterScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Registro de Usuario</h2>
+                <input type="text" id="username" placeholder="Nombre de Usuario"><br><br>
+                <input type="number" id="weight" placeholder="Peso (kg)"><br><br>
+                <input type="number" id="height" placeholder="Altura (cm)"><br><br>
+                <button class="save-button" onclick="registerUser()">Registrarse</button><br>
+                <button class="back-button" onclick="showLoginScreen()">Volver</button>
+            `;
         }
 
-        // Cargar datos de usuarios y rutinas al inicio
-        users = readFromFile("users");
-        routines = readFromFile("routines");
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
 
-        function showUserInfo() {
-            alert(`Nombre: ${userInfo.nombre}\nPeso (kg): ${userInfo.peso}\nAltura (cm): ${userInfo.altura}`);
+            if (!username || !weight || !height) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const user = { username, weight, height };
+            users.push(user);
+            saveToFile("users", users);
+
+            alert('Usuario registrado con éxito!');
+            showLoginScreen();
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            users = readFromFile("users");
+
+            const user = users.find(u => u.username === username);
+            if (!user) {
+                alert('Usuario no encontrado.');
+                return;
+            }
+
+            currentUser = user;
+            showMainScreen();
+        }
+
+        function showMainScreen() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Bienvenido, ${currentUser.username}</h2>
+                <button class="button" onclick="manageRoutines()">Ver Rutinas</button><br>
+                <button class="button" onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
+                <button class="button" onclick="viewProgress()">Ver Progreso</button><br>
+            `;
+        }
+
+        function viewUserInfo() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Información del Usuario</h2>
+                <p>Nombre: ${currentUser.username}</p>
+                <p>Peso: ${currentUser.weight} kg</p>
+                <p>Altura: ${currentUser.height} cm</p>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
+            `;
         }
 
         function editUserInfo() {
             const main = document.getElementById('main');
             main.innerHTML = `
                 <h2>Editar Información del Usuario</h2>
-                <label>Nombre de Usuario:</label>
-                <input type="text" id="username" value="${userInfo.nombre}"><br><br>
-                <label>Peso (kg):</label>
-                <input type="text" id="weight" value="${userInfo.peso}"><br><br>
-                <label>Altura (cm):</label>
-                <input type="text" id="height" value="${userInfo.altura}"><br><br>
+                <input type="text" id="username" value="${currentUser.username}" placeholder="Nombre de Usuario"><br><br>
+                <input type="number" id="weight" value="${currentUser.weight}" placeholder="Peso (kg)"><br><br>
+                <input type="number" id="height" value="${currentUser.height}" placeholder="Altura (cm)"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
@@ -132,105 +146,33 @@
             const weight = document.getElementById('weight').value;
             const height = document.getElementById('height').value;
 
-            userInfo = { nombre: username, peso: weight, altura: height };
-
-            // Actualizar el usuario en la lista de usuarios
-            const userIndex = users.findIndex(user => user.nombre === userInfo.nombre);
-            if (userIndex !== -1) {
-                users[userIndex] = userInfo;
-            } else {
-                users.push(userInfo);
-            }
+            currentUser.username = username;
+            currentUser.weight = weight;
+            currentUser.height = height;
 
             saveToFile("users", users);
-            alert('Información actualizada!');
+            alert('Información guardada con éxito!');
             showMainScreen();
-        }
-
-        function showLoginScreen() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Inicio de Sesión</h2>
-                <label>Nombre de Usuario:</label>
-                <input type="text" id="username"><br><br>
-                <button class="save-button" onclick="login()">Iniciar Sesión</button><br><br>
-                <a href="#" onclick="showRegisterScreen()">¿No tienes cuenta? Regístrate aquí</a>
-            `;
-        }
-
-        function login() {
-            const username = document.getElementById('username').value;
-            const user = users.find(user => user.nombre === username);
-
-            if (user) {
-                userInfo = user;
-                showMainScreen();
-            } else {
-                alert('Usuario no encontrado. Regístrate primero.');
-            }
-        }
-
-        function showRegisterScreen() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Registro de Usuario</h2>
-                <label>Nombre de Usuario:</label>
-                <input type="text" id="username"><br><br>
-                <label>Peso (kg):</label>
-                <input type="text" id="weight"><br><br>
-                <label>Altura (cm):</label>
-                <input type="text" id="height"><br><br>
-                <button class="save-button" onclick="register()">Registrar</button><br>
-                <button class="back-button" onclick="showLoginScreen()">Volver</button>
-            `;
-        }
-
-        function register() {
-            const username = document.getElementById('username').value;
-            const weight = document.getElementById('weight').value;
-            const height = document.getElementById('height').value;
-
-            const user = { nombre: username, peso: weight, altura: height };
-            users.push(user);
-            saveToFile("users", users);
-
-            alert('Registro exitoso!');
-            showMainScreen();
-        }
-
-        function showMainScreen() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Bienvenido, ${userInfo.nombre}</h2>
-                <button onclick="manageRoutines()">Administrar Rutinas</button><br>
-                <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
-                <button onclick="viewProgress()">Ver Progreso</button><br>
-            `;
         }
 
         function manageRoutines() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Administrar Rutinas</h2>
-                <button onclick="registerRoutines()">Registrar Rutinas</button><br>
-                <button onclick="viewRoutines()">Ver Rutinas</button><br>
-                <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
+                <h2>Gestionar Rutinas</h2>
+                <button class="button" onclick="addRoutine()">Agregar Rutina</button><br>
+                <button class="button" onclick="viewRoutines()">Ver Rutinas</button><br>
+                <button class="button" onclick="deleteRoutines()">Eliminar Rutinas</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
         }
 
-        function registerRoutines() {
+        function addRoutine() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Registrar Rutinas</h2>
-                <label>Ejercicio:</label>
-                <input type="text" id="exercise"><br><br>
-                <label>Repeticiones:</label>
-                <input type="text" id="reps"><br><br>
-                <label>Series:</label>
-                <input type="text" id="sets"><br><br>
-                <label>Descripción:</label>
-                <input type="text" id="description"><br><br>
+                <h2>Agregar Rutina</h2>
+                <input type="text" id="exercise" placeholder="Ejercicio"><br><br>
+                <input type="number" id="reps" placeholder="Repeticiones"><br><br>
+                <input type="number" id="sets" placeholder="Series"><br><br>
                 <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
@@ -240,9 +182,13 @@
             const exercise = document.getElementById('exercise').value;
             const reps = document.getElementById('reps').value;
             const sets = document.getElementById('sets').value;
-            const description = document.getElementById('description').value;
 
-            const routine = { exercise, reps, sets, description };
+            if (!exercise || !reps || !sets) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const routine = { exercise, reps, sets };
             routines.push(routine);
             saveToFile("routines", routines);
 
@@ -252,19 +198,23 @@
 
         function viewRoutines() {
             const main = document.getElementById('main');
-            let routineList = routines.map((routine, index) => `
-                <li>Rutina ${index + 1}: ${routine.exercise}, ${routine.reps} repeticiones, ${routine.sets} series</li>
-            `).join('');
-
             main.innerHTML = `
                 <h2>Ver Rutinas</h2>
-                <ul>${routineList}</ul>
+                <ul id="routineList"></ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
+
+            const routineList = document.getElementById('routineList');
+            routines.forEach((routine, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Rutina ${index + 1}: ${routine.exercise}, ${routine.reps} repeticiones, ${routine.sets} series`;
+                routineList.appendChild(listItem);
+            });
         }
 
         function deleteRoutines() {
-            const main = document.getElementById('
+            const main = document.getElementById('main');
+            main.innerHTML = `
                 <h2>Eliminar Rutinas</h2>
                 <ul id="routineList"></ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
@@ -363,6 +313,15 @@
                     }
                 }
             });
+        }
+
+        function saveToFile(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function readFromFile(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
         }
 
         // Mostrar pantalla de inicio de sesión al cargar la página
