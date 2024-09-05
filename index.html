@@ -7,85 +7,69 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+            background-color: #f0f0f0;
+            color: #333;
         }
+
         #header {
             display: flex;
             justify-content: flex-end;
             padding: 10px;
-            background: linear-gradient(135deg, #333333, #555555);
+            background-color: #333;
             color: white;
         }
-        #header button {
-            font-size: 14px;
-            padding: 8px 20px;
-            margin: 5px;
-        }
-        #main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 90vh;
-        }
+
         button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #e0e0e0;
-            color: #333333;
+            padding: 10px;
+            margin: 5px;
+            background-color: #555;
+            color: white;
             border: none;
-            border-radius: 5px;
-            width: 100%;
-            max-width: 300px;
+            cursor: pointer;
         }
-        .save-button {
-            background-color: #e0e0e0;
-            color: #333333;
+
+        button:hover {
+            background-color: #777;
         }
-        input[type="text"], input[type="datetime-local"] {
-            width: 100%;
-            max-width: 300px;
-            padding: 8px;
-            margin: 5px 0;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-        }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+
         .back-button {
-            margin-top: 20px;
-            background-color: #ccc;
+            background-color: #999;
         }
+
+        .back-button:hover {
+            background-color: #bbb;
+        }
+
+        .save-button {
+            background-color: #4CAF50;
+        }
+
+        .save-button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+        }
+
+        .delete-button:hover {
+            background-color: #e57373;
+        }
+
+        #main {
+            padding: 20px;
+        }
+
         ul {
             list-style-type: none;
             padding: 0;
         }
+
         li {
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #ddd;
+            background-color: #ddd;
+            margin: 5px 0;
             padding: 10px;
             border-radius: 5px;
-        }
-        .delete-button {
-            background-color: #ff6b6b;
-            color: #fff;
-        }
-        .delete-button:hover {
-            background-color: #ff4d4d;
         }
     </style>
 </head>
@@ -107,8 +91,60 @@
             altura: ""
         };
 
+        let users = [];
+        let routines = [];
+
+        // Función para leer y escribir archivos simulados con localStorage (en vez de un sistema de archivos real)
+        function saveToFile(filename, data) {
+            localStorage.setItem(filename, JSON.stringify(data));
+        }
+
+        function readFromFile(filename) {
+            const fileContent = localStorage.getItem(filename);
+            return fileContent ? JSON.parse(fileContent) : [];
+        }
+
+        // Cargar datos de usuarios y rutinas al inicio
+        users = readFromFile("users");
+        routines = readFromFile("routines");
+
         function showUserInfo() {
             alert(`Nombre: ${userInfo.nombre}\nPeso (kg): ${userInfo.peso}\nAltura (cm): ${userInfo.altura}`);
+        }
+
+        function editUserInfo() {
+            const main = document.getElementById('main');
+            main.innerHTML = `
+                <h2>Editar Información del Usuario</h2>
+                <label>Nombre de Usuario:</label>
+                <input type="text" id="username" value="${userInfo.nombre}"><br><br>
+                <label>Peso (kg):</label>
+                <input type="text" id="weight" value="${userInfo.peso}"><br><br>
+                <label>Altura (cm):</label>
+                <input type="text" id="height" value="${userInfo.altura}"><br><br>
+                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
+                <button class="back-button" onclick="showMainScreen()">Volver</button>
+            `;
+        }
+
+        function saveUserInfo() {
+            const username = document.getElementById('username').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+
+            userInfo = { nombre: username, peso: weight, altura: height };
+
+            // Actualizar el usuario en la lista de usuarios
+            const userIndex = users.findIndex(user => user.nombre === userInfo.nombre);
+            if (userIndex !== -1) {
+                users[userIndex] = userInfo;
+            } else {
+                users.push(userInfo);
+            }
+
+            saveToFile("users", users);
+            alert('Información actualizada!');
+            showMainScreen();
         }
 
         function showLoginScreen() {
@@ -123,8 +159,15 @@
         }
 
         function login() {
-            userInfo.nombre = document.getElementById('username').value;
-            showMainScreen();
+            const username = document.getElementById('username').value;
+            const user = users.find(user => user.nombre === username);
+
+            if (user) {
+                userInfo = user;
+                showMainScreen();
+            } else {
+                alert('Usuario no encontrado. Regístrate primero.');
+            }
         }
 
         function showRegisterScreen() {
@@ -143,9 +186,14 @@
         }
 
         function register() {
-            userInfo.nombre = document.getElementById('username').value;
-            userInfo.peso = document.getElementById('weight').value;
-            userInfo.altura = document.getElementById('height').value;
+            const username = document.getElementById('username').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+
+            const user = { nombre: username, peso: weight, altura: height };
+            users.push(user);
+            saveToFile("users", users);
+
             alert('Registro exitoso!');
             showMainScreen();
         }
@@ -189,47 +237,69 @@
         }
 
         function saveRoutine() {
+            const exercise = document.getElementById('exercise').value;
+            const reps = document.getElementById('reps').value;
+            const sets = document.getElementById('sets').value;
+            const description = document.getElementById('description').value;
+
+            const routine = { exercise, reps, sets, description };
+            routines.push(routine);
+            saveToFile("routines", routines);
+
             alert('Rutina guardada con éxito!');
             manageRoutines();
         }
 
         function viewRoutines() {
             const main = document.getElementById('main');
+            let routineList = routines.map((routine, index) => `
+                <li>Rutina ${index + 1}: ${routine.exercise}, ${routine.reps} repeticiones, ${routine.sets} series</li>
+            `).join('');
+
             main.innerHTML = `
                 <h2>Ver Rutinas</h2>
-                <ul>
-                    <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
-                    <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
-                </ul>
+                <ul>${routineList}</ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
         }
 
         function deleteRoutines() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
+            const main = document.getElementById('
                 <h2>Eliminar Rutinas</h2>
-                <ul>
-                    <li>Rutina 1 <button class="delete-button" onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
-                    <li>Rutina 2 <button class="delete-button" onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
-                </ul>
+                <ul id="routineList"></ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
             `;
+
+            const routineList = document.getElementById('routineList');
+            routines.forEach((routine, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    Rutina ${index + 1}: ${routine.exercise}, ${routine.reps} repeticiones, ${routine.sets} series 
+                    <button class="delete-button" onclick="deleteRoutine(${index})">Eliminar</button>
+                `;
+                routineList.appendChild(listItem);
+            });
         }
 
-        function deleteRoutine(routine) {
-            alert(`Rutina ${routine} eliminada.`);
-            deleteRoutines();
+        function deleteRoutine(index) {
+            if (confirm('¿Seguro que quieres eliminar esta rutina?')) {
+                routines.splice(index, 1);
+                saveToFile("routines", routines);
+                deleteRoutines(); // Recargar la lista de rutinas
+            }
         }
 
         function registerExercise() {
             const main = document.getElementById('main');
+            let routineOptions = routines.map((routine, index) => `
+                <option value="${index}">${routine.exercise}</option>
+            `).join('');
+
             main.innerHTML = `
                 <h2>Registrar Ejercicio Realizado</h2>
-                <label>Selecciona la Rutina:</label>
-                <select id="routine">
-                    <option value="Rutina 1">Rutina 1</option>
-                    <option value="Rutina 2">Rutina 2</option>
+                <label>Seleccionar Rutina:</label>
+                <select id="routineSelect">
+                    ${routineOptions}
                 </select><br><br>
                 <label>Fecha y Hora:</label>
                 <input type="datetime-local" id="datetime"><br><br>
@@ -239,48 +309,54 @@
         }
 
         function saveExercise() {
-            const routine = document.getElementById('routine').value;
+            const routineIndex = document.getElementById('routineSelect').value;
             const datetime = document.getElementById('datetime').value;
-            alert(`Registro guardado para ${routine} en ${datetime}`);
+
+            if (!datetime) {
+                alert('Por favor, selecciona una fecha y hora.');
+                return;
+            }
+
+            const exerciseRecord = {
+                routine: routines[routineIndex],
+                datetime
+            };
+
+            let exerciseRecords = readFromFile("exerciseRecords");
+            exerciseRecords.push(exerciseRecord);
+            saveToFile("exerciseRecords", exerciseRecords);
+
+            alert('Ejercicio registrado con éxito!');
             showMainScreen();
         }
 
         function viewProgress() {
             const main = document.getElementById('main');
             main.innerHTML = `
-                <h2>Ver Progreso</h2>
-                <div>
-                    <canvas id="progressChart" width="400" height="200"></canvas>
-                </div>
+                <h2>Progreso</h2>
+                <canvas id="progressChart"></canvas><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
             `;
-            createProgressChart();
-        }
 
-        function createProgressChart() {
             const ctx = document.getElementById('progressChart').getContext('2d');
+            const exerciseRecords = readFromFile("exerciseRecords");
+            const dates = exerciseRecords.map(record => new Date(record.datetime).toLocaleDateString());
+            const routinesDone = exerciseRecords.map(record => record.routine.exercise);
+
             new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+                    labels: dates,
                     datasets: [{
-                        label: 'Peso',
-                        data: [70, 69, 68, 67, 66],
-                        borderColor: '#FF5733',
-                        backgroundColor: 'rgba(255, 87, 51, 0.2)',
-                    }, {
-                        label: 'Altura',
-                        data: [170, 170, 170, 170, 170],
-                        borderColor: '#33B5FF',
-                        backgroundColor: 'rgba(51, 181, 255, 0.2)',
+                        label: 'Ejercicios Realizados',
+                        data: routinesDone.map((_, i) => i + 1),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
                     scales: {
-                        x: {
-                            beginAtZero: true
-                        },
                         y: {
                             beginAtZero: true
                         }
@@ -289,30 +365,8 @@
             });
         }
 
-        function editUserInfo() {
-            const main = document.getElementById('main');
-            main.innerHTML = `
-                <h2>Editar Información del Usuario</h2>
-                <label>Nombre:</label>
-                <input type="text" id="editName" value="${userInfo.nombre}"><br><br>
-                <label>Peso:</label>
-                <input type="text" id="editWeight" value="${userInfo.peso}"><br><br>
-                <label>Altura:</label>
-                <input type="text" id="editHeight" value="${userInfo.altura}"><br><br>
-                <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
-                <button class="back-button" onclick="showMainScreen()">Volver</button>
-            `;
-        }
-
-        function saveUserInfo() {
-            userInfo.nombre = document.getElementById('editName').value;
-            userInfo.peso = document.getElementById('editWeight').value;
-            userInfo.altura = document.getElementById('editHeight').value;
-            alert('Información actualizada con éxito!');
-            showMainScreen();
-        }
-
-        showLoginScreen(); // Inicia con la pantalla de inicio de sesión
+        // Mostrar pantalla de inicio de sesión al cargar la página
+        window.onload = showLoginScreen;
     </script>
 </body>
 </html>
