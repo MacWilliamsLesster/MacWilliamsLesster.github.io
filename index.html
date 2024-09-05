@@ -108,18 +108,18 @@
         };
 
         function showUserInfo() {
-            alert(Nombre: ${userInfo.nombre}\nPeso (kg): ${userInfo.peso}\nAltura (cm): ${userInfo.altura});
+            alert(`Nombre: ${userInfo.nombre}\nPeso (kg): ${userInfo.peso}\nAltura (cm): ${userInfo.altura}`);
         }
 
         function showLoginScreen() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Inicio de Sesión</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
                 <button class="save-button" onclick="login()">Iniciar Sesión</button><br><br>
                 <a href="#" onclick="showRegisterScreen()">¿No tienes cuenta? Regístrate aquí</a>
-            ;
+            `;
         }
 
         function login() {
@@ -129,7 +129,7 @@
 
         function showRegisterScreen() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Registro de Usuario</h2>
                 <label>Nombre de Usuario:</label>
                 <input type="text" id="username"><br><br>
@@ -139,7 +139,7 @@
                 <input type="text" id="height"><br><br>
                 <button class="save-button" onclick="register()">Registrar</button><br>
                 <button class="back-button" onclick="showLoginScreen()">Volver</button>
-            ;
+            `;
         }
 
         function register() {
@@ -152,28 +152,28 @@
 
         function showMainScreen() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Bienvenido, ${userInfo.nombre}</h2>
                 <button onclick="manageRoutines()">Administrar Rutinas</button><br>
                 <button onclick="registerExercise()">Registrar Ejercicio Realizado</button><br>
                 <button onclick="viewProgress()">Ver Progreso</button><br>
-            ;
+            `;
         }
 
         function manageRoutines() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Administrar Rutinas</h2>
                 <button onclick="registerRoutines()">Registrar Rutinas</button><br>
                 <button onclick="viewRoutines()">Ver Rutinas</button><br>
                 <button onclick="deleteRoutines()">Eliminar Rutinas</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
-            ;
+            `;
         }
 
         function registerRoutines() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Registrar Rutinas</h2>
                 <label>Ejercicio:</label>
                 <input type="text" id="exercise"><br><br>
@@ -185,7 +185,7 @@
                 <input type="text" id="description"><br><br>
                 <button class="save-button" onclick="saveRoutine()">Guardar Rutina</button><br>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
-            ;
+            `;
         }
 
         function saveRoutine() {
@@ -195,36 +195,36 @@
 
         function viewRoutines() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Ver Rutinas</h2>
                 <ul>
                     <li>Rutina 1: Ejercicio A, 10 repeticiones, 3 series</li>
                     <li>Rutina 2: Ejercicio B, 15 repeticiones, 4 series</li>
                 </ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
-            ;
+            `;
         }
 
         function deleteRoutines() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Eliminar Rutinas</h2>
                 <ul>
                     <li>Rutina 1 <button class="delete-button" onclick="deleteRoutine('Rutina 1')">Eliminar</button></li>
                     <li>Rutina 2 <button class="delete-button" onclick="deleteRoutine('Rutina 2')">Eliminar</button></li>
                 </ul>
                 <button class="back-button" onclick="manageRoutines()">Volver</button>
-            ;
+            `;
         }
 
         function deleteRoutine(routine) {
-            alert(Rutina ${routine} eliminada.);
+            alert(`Rutina ${routine} eliminada.`);
             deleteRoutines();
         }
 
         function registerExercise() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Registrar Ejercicio Realizado</h2>
                 <label>Selecciona la Rutina:</label>
                 <select id="routine">
@@ -235,25 +235,25 @@
                 <input type="datetime-local" id="datetime"><br><br>
                 <button class="save-button" onclick="saveExercise()">Guardar Registro</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
-            ;
+            `;
         }
 
         function saveExercise() {
             const routine = document.getElementById('routine').value;
             const datetime = document.getElementById('datetime').value;
-            alert(Registro guardado para ${routine} en ${datetime});
+            alert(`Registro guardado para ${routine} en ${datetime}`);
             showMainScreen();
         }
 
         function viewProgress() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Ver Progreso</h2>
                 <div>
                     <canvas id="progressChart" width="400" height="200"></canvas>
                 </div>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
-            ;
+            `;
             createProgressChart();
         }
 
@@ -291,7 +291,7 @@
 
         function editUserInfo() {
             const main = document.getElementById('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <h2>Editar Información del Usuario</h2>
                 <label>Nombre:</label>
                 <input type="text" id="editName" value="${userInfo.nombre}"><br><br>
@@ -301,7 +301,7 @@
                 <input type="text" id="editHeight" value="${userInfo.altura}"><br><br>
                 <button class="save-button" onclick="saveUserInfo()">Guardar Cambios</button><br>
                 <button class="back-button" onclick="showMainScreen()">Volver</button>
-            ;
+            `;
         }
 
         function saveUserInfo() {
